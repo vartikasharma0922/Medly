@@ -27,7 +27,7 @@ Medly is a hospital care workspace for coordinating patient admissions, appointm
 - **Frontend:** Vercel
 - **Backend API:** Railway
 
-The frontend and backend deploy separately. The backend requires a MongoDB connection and a JWT secret. Configure `dbURL` and `key` in the Railway service variables; Railway provides `PORT` automatically. Set the frontend's `REACT_APP_API_URL` to the public Railway API URL in Vercel, then redeploy the frontend.
+The frontend and backend deploy separately. Set Vercel's **Root Directory** to `frontend` and Railway's **Root Directory** to `backend`. The backend requires a MongoDB connection and a JWT secret. Configure `dbURL` and `key` in the Railway service variables; Railway provides `PORT` automatically. Set the frontend's `REACT_APP_API_URL` to the public Railway API URL in Vercel, then redeploy the frontend.
 
 ## Run locally
 
@@ -35,7 +35,7 @@ Prerequisites: Node.js and a running Medly backend API with MongoDB configured.
 
 ```bash
 git clone https://github.com/vartikasharma0922/Medly.git
-cd Medly
+cd Medly/frontend
 npm install
 cp .env.example .env
 npm start
