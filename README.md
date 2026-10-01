@@ -1,31 +1,4 @@
 
-## To Run Locally
-
-Clone the project
-
-```bash
-  https://github.com/vartikasharma0922/Medly.git
-```
-
-Go to the project directory
-
-```bash
-  cd Hospital-Management-System
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run start
-```
-
-
 # Medly
 
 Medly is a hospital care workspace for coordinating patient admissions, appointments, beds, ambulance requests, payments, and clinical reports.
@@ -51,14 +24,32 @@ Medly is a hospital care workspace for coordinating patient admissions, appointm
 
 ## Deployment
 
-- **Client**  (Netlify)
-- **Server** - (Cyclic)
+- **Frontend:** Vercel
+- **Backend API:** Railway
 
-## Credentials
+The frontend and backend deploy separately. The backend requires a MongoDB connection and a JWT secret. Configure `dbURL` and `key` in the Railway service variables; Railway provides `PORT` automatically. Set the frontend's `REACT_APP_API_URL` to the public Railway API URL in Vercel, then redeploy the frontend.
 
-ID - 100
+## Run locally
 
-Password - masai
+Prerequisites: Node.js and a running Medly backend API with MongoDB configured.
+
+```bash
+git clone https://github.com/vartikasharma0922/Medly.git
+cd Medly
+npm install
+cp .env.example .env
+npm start
+```
+
+The frontend defaults to `http://localhost:8080` for its API. Set `REACT_APP_API_URL` in `.env` if your backend runs elsewhere. The frontend opens at `http://localhost:3000`.
+
+## Demo credentials
+
+| Role | ID | Password |
+| --- | --- | --- |
+| Admin | 100 | masai |
+| Doctor | 101 | masai |
+| Nurse | 102 | masai |
 
 ## Features
 
@@ -71,11 +62,15 @@ Password - masai
 
 ## 🔗 Links
 
-Dashboard - https://hm-system.netlify.app/
+Source repository: https://github.com/vartikasharma0922/Medly
 
-User Side - https://hms-user-side.netlify.app/
+The Vercel and Railway deployment URLs have not been added yet.
 
-Server - https://github.com/piyush-agrawal6/HMS-Backend
+## Original contributors
+
+- [Piyush Agrawal](https://github.com/piyush-agrawal6)
+- [Rajendra Patel](https://github.com/centauricoder01)
+- [Salman Ajani](https://github.com/SalmanAjani)
 
 ## Screenshots
 
