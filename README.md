@@ -66,12 +66,6 @@ Source repository: https://github.com/vartikasharma0922/Medly
 
 The Vercel and Railway deployment URLs have not been added yet.
 
-## Original contributors
-
-- [Piyush Agrawal](https://github.com/piyush-agrawal6)
-- [Rajendra Patel](https://github.com/centauricoder01)
-- [Salman Ajani](https://github.com/SalmanAjani)
-
 ## Screenshots
 
 1.Dashboard
