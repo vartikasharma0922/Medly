@@ -10,7 +10,9 @@ require("dotenv").config();
  * Connect to MongoDB using the dbURL from environment variables.
  * Logic is handled by mongoose.connect().
  */
-const connection = mongoose.connect(process.env.dbURL);
+const connection = mongoose.connect(process.env.dbURL, {
+	serverSelectionTimeoutMS: 10000,
+});
 
 // Export the connection promise to be used in the main application entry point
 module.exports = { connection };

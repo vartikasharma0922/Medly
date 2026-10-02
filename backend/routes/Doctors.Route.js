@@ -64,6 +64,7 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log({ message: "Error" });
     console.log(error);
+    res.status(503).send({ message: "Login service unavailable" });
   }
 });
 
