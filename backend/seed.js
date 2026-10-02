@@ -1,31 +1,51 @@
 /**
  * Database Seed Script
- * Creates default admin user and sample data for the Hospital Management System
+ * Creates default admin user and sample data
+ * for the Hospital Management System
  */
 
 const mongoose = require("mongoose");
-require("dotenv").config();
+const path = require("path");
+
+// Load .env from the Medly project root
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 const { AdminModel } = require("./models/Admin.model");
 const { DoctorModel } = require("./models/Doctor.model");
 const { NurseModel } = require("./models/Nurse.model");
 
-const dbURL = process.env.dbURL || "mongodb://localhost:27017/hms";
+// Use the same environment variable as Render
+const dbURL = process.env.MONGODB_URI;
+
+if (!dbURL) {
+  console.error("❌ MONGODB_URI is not set");
+  process.exit(1);
+}
 
 async function seed() {
   try {
     console.log("🌱 Starting database seed...");
-    console.log(`📦 Connecting to: ${dbURL}`);
-    
+    console.log("📦 Connecting to MongoDB...");
+
     await mongoose.connect(dbURL);
+
     console.log("✅ Connected to MongoDB");
 
-    // Check if admin already exists
-    const existingAdmin = await AdminModel.findOne({ adminID: 100 });
+    // --------------------------------------------------
+    // ADMIN
+    // --------------------------------------------------
+
+    const existingAdmin = await AdminModel.findOne({
+      adminID: 100,
+    });
+
     if (existingAdmin) {
-      console.log("⚠️  Default admin already exists, skipping admin creation");
+      console.log(
+        "⚠️ Default admin already exists, skipping admin creation"
+      );
     } else {
-      // Create default admin
       const defaultAdmin = new AdminModel({
         adminID: 100,
         adminName: "Super Admin",
@@ -38,42 +58,61 @@ async function seed() {
         address: "Hospital Main Building",
         education: "MBA Healthcare Management",
       });
+
       await defaultAdmin.save();
-      console.log("✅ Default admin created (ID: 100, Password: masai)");
+
+      console.log("✅ Default admin created");
     }
 
-    // Check if sample doctor exists
-    const existingDoctor = await DoctorModel.findOne({ docID: 101 });
-    if (existingDoctor) {
-      console.log("⚠️  Sample doctor already exists, skipping doctor creation");
-    } else {
-      // Create sample doctor
-      const sampleDoctor = new DoctorModel({
-      userType: "doctor",
+    // --------------------------------------------------
+    // DOCTOR
+    // --------------------------------------------------
+
+    const existingDoctor = await DoctorModel.findOne({
       docID: 101,
-      docName: "Vartika Sharma",
-      email: "vartika@hms.com",
-      password: "masai", // Keeping original password format as 'hashedPassword' is not defined
-      mobile: 9876543210,
-      age: 32,
-      gender: "Female",
-      bloodGroup: "A+",
-      DOB: new Date("1992-05-15"),
-      address: "123 Medical Drive, New York",
-      education: "MBBS, MD Cardiology",
-      department: "Cardiology",
-      details: "Senior cardiologist with over 10 years of experience."
     });
+
+    if (existingDoctor) {
+      console.log(
+        "⚠️ Sample doctor already exists, skipping doctor creation"
+      );
+    } else {
+      const sampleDoctor = new DoctorModel({
+        userType: "doctor",
+        docID: 101,
+        docName: "Vartika Sharma",
+        email: "vartika@hms.com",
+        password: "masai",
+        mobile: 9876543210,
+        age: 32,
+        gender: "Female",
+        bloodGroup: "A+",
+        DOB: new Date("1992-05-15"),
+        address: "123 Medical Drive, New York",
+        education: "MBBS, MD Cardiology",
+        department: "Cardiology",
+        details:
+          "Senior cardiologist with over 10 years of experience.",
+      });
+
       await sampleDoctor.save();
-      console.log("✅ Sample doctor created (ID: 101, Password: masai)");
+
+      console.log("✅ Sample doctor created");
     }
 
-    // Check if sample nurse exists
-    const existingNurse = await NurseModel.findOne({ nurseID: 102 });
+    // --------------------------------------------------
+    // NURSE
+    // --------------------------------------------------
+
+    const existingNurse = await NurseModel.findOne({
+      nurseID: 102,
+    });
+
     if (existingNurse) {
-      console.log("⚠️  Sample nurse already exists, skipping nurse creation");
+      console.log(
+        "⚠️ Sample nurse already exists, skipping nurse creation"
+      );
     } else {
-      // Create sample nurse
       const sampleNurse = new NurseModel({
         nurseID: 102,
         nurseName: "Jane Doe",
@@ -88,24 +127,31 @@ async function seed() {
         education: "BSc Nursing",
         details: "Senior Nurse, ICU Specialist",
       });
+
       await sampleNurse.save();
-      console.log("✅ Sample nurse created (ID: 102, Password: masai)");
+
+      console.log("✅ Sample nurse created");
     }
 
+    // --------------------------------------------------
+    // DONE
+    // --------------------------------------------------
+
     console.log("\n🎉 Database seeding completed successfully!");
-    console.log("\n📋 Login Credentials:");
-    console.log("   Admin  - ID: 100, Password: masai");
-    console.log("   Doctor - ID: 101, Password: masai");
-    console.log("   Nurse  - ID: 102, Password: masai");
-    
+
     await mongoose.disconnect();
-    console.log("\n✅ Disconnected from MongoDB");
+
+    console.log("✅ Disconnected from MongoDB");
+
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error seeding database:", error);
+    console.error("❌ Error seeding database:");
+    console.error(error);
+
+    await mongoose.disconnect();
+
     process.exit(1);
   }
 }
 
 seed();
-
