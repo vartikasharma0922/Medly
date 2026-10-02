@@ -2,17 +2,16 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 console.log("=================================");
-console.log("RENDER ENVIRONMENT CHECK");
-console.log("dbURL exists:", process.env.dbURL !== undefined);
-console.log("dbURL is empty:", !process.env.dbURL);
+console.log("DATABASE ENVIRONMENT CHECK");
+console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
 console.log("=================================");
 
-if (!process.env.dbURL) {
-    console.error("ERROR: dbURL environment variable is missing!");
+if (!process.env.MONGODB_URI) {
+    console.error("ERROR: MONGODB_URI environment variable is missing!");
     process.exit(1);
 }
 
-const connection = mongoose.connect(process.env.dbURL, {
+const connection = mongoose.connect(process.env.MONGODB_URI, {
     serverSelectionTimeoutMS: 10000,
 });
 
