@@ -19,8 +19,8 @@ const reportRouter = require("./routes/Reports.Route");
 const app = express();
 
 // Middleware
-app.use(express.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS for all routes
+app.use(express.json());
+app.use(cors());
 
 // Basic route for health check
 app.get("/", (req, res) => {
@@ -40,16 +40,22 @@ app.use("/payments", paymentRouter);
 app.use("/prescriptions", prescriptionRouter);
 app.use("/reports", reportRouter);
 
-// Start server and connect to DB
+// Start server only after database connection succeeds
 const port = process.env.PORT || process.env.port || 8080;
 
-app.listen(port, async () => {
+async function startServer() {
   try {
     await connection;
     console.log("Connected to DB");
+
+    app.listen(port, () => {
+      console.log(`Listening at port ${port}`);
+    });
   } catch (error) {
-    console.log("Unable to connect to DB");
-    console.log(error);
+    console.error("Unable to connect to DB");
+    console.error(error);
+    process.exit(1);
   }
-  console.log(`Listening at port ${port}`);
-});
+}
+
+startServer();
